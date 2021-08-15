@@ -1,0 +1,22 @@
+.card-icon {
+  width: 17px;
+  height: 17px;
+  margin-right: 8px !important;
+}
+
+.steps-wrapper {
+  position: relative;
+}
+
+.close-icon {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
+  color: #888;
+}
+
+.status-text {
+  font-size: 12px;
+  margin-left: 5px;
+  color: darkorange;
+}

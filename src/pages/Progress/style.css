@@ -1,0 +1,11 @@
+.progress-wrapper{
+  width: 100%;
+}
+
+.empty-icon {
+  width: 100px;
+  height: 100px;
+  margin-top: 200px;
+  transform: translateX(-50%);
+  margin-left: 50%;
+}
