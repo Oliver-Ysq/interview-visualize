@@ -1,6 +1,8 @@
 import { makeAutoObservable } from "mobx"
 import { JobStatus } from "../utils/constant"
 import { getChineseNumber } from "../utils/util"
+
+type ITime = Date | string | undefined | null
 /**
  * jobStatus: JobStatus, // 投递状态
  * companyName: string; // 公司名
@@ -11,12 +13,11 @@ import { getChineseNumber } from "../utils/util"
  * totalRounds: number; // 除笔试、HR面外的轮数
  * tips?: string; // 备注
  * timeList: {  // time：时间   status：-1 等待； 0 失败； 1 成功；
-    written: { time: string, status: number },
-    interview: Array<{ time: string, status: number }>,
-    hr: { time: string, status: number }
+    written: { time: string | Date, status?: number },
+    interview: Array<{ time: string | Date, status?: number }>,
+    hr: { time: string | Date, status?: number }
   }
  */
-
 export interface IInterviewListItem {
   jobStatus: JobStatus,
   companyName: string;
@@ -26,9 +27,9 @@ export interface IInterviewListItem {
   needHRinterview: boolean; // 是否需要HR面
   totalRounds: number; // 除笔试、HR面外的轮数
   timeList: {
-    written: { time: string, status: number },
-    interview: Array<{ time: string, status: number }>,
-    hr: { time: string, status: number }
+    written: { time: ITime, status?: number },
+    interview: Array<{ time: ITime, status?: number }>,
+    hr: { time: ITime, status?: number }
   }
   tips?: string; // 备注
 }
@@ -39,7 +40,6 @@ class ProgressStore {
       companyName: '百度',
       positionName: '前端',
       totalRounds: 2,
-      tips: '可以可以可以可以可以',
       current: 0,
       needWrittenExam: true,
       needHRinterview: true,

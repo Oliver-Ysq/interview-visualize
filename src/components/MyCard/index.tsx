@@ -31,15 +31,27 @@ const MyCard = (item: IInterviewListItem & { index: number }) => {
       <div className="steps-wrapper">
         <Steps size="large" current={item.current} direction='vertical'>
           {item.needWrittenExam ?
-            <Step title="笔试" description={item.timeList.written.time} />
+            <Step title="笔试" description={item.timeList.written && item.timeList.written.time} />
             : null
           }
-          {item.totalRounds >= 1 ? <Step title="一面" description={item.timeList.interview[0].time} key={item.timeList.interview[0].time} /> : null}
-          {item.totalRounds >= 2 ? <Step title="二面" description={item.timeList.interview[1].time} key={item.timeList.interview[1].time} /> : null}
-          {item.totalRounds >= 3 ? <Step title="三面" description={item.timeList.interview[2].time} key={item.timeList.interview[2].time} /> : null}
-          {item.totalRounds >= 4 ? <Step title="四面" description={item.timeList.interview[3].time} key={item.timeList.interview[3].time} /> : null}
-          {item.totalRounds >= 5 ? <Step title="五面" description={item.timeList.interview[4].time} key={item.timeList.interview[4].time} /> : null}
-          {item.totalRounds >= 6 ? <Step title="六面" description={item.timeList.interview[5].time} key={item.timeList.interview[5].time} /> : null}
+          {item.totalRounds >= 1 ? <Step title="一面"
+            description={item.timeList.interview[0] && item.timeList.interview[0].time}
+            key={'1面'} /> : null}
+          {item.totalRounds >= 2 ? <Step title="二面"
+            description={item.timeList.interview[1] && item.timeList.interview[1].time}
+            key={'2面'} /> : null}
+          {item.totalRounds >= 3 ? <Step title="三面"
+            description={item.timeList.interview[2] && item.timeList.interview[2].time}
+            key={'3面'} /> : null}
+          {item.totalRounds >= 4 ? <Step title="四面"
+            description={item.timeList.interview[3] && item.timeList.interview[3].time}
+            key={'4面'} /> : null}
+          {item.totalRounds >= 5 ? <Step title="五面"
+            description={item.timeList.interview[4] && item.timeList.interview[4].time}
+            key={'5面'} /> : null}
+          {item.totalRounds >= 6 ? <Step title="六面"
+            description={item.timeList.interview[5] && item.timeList.interview[5].time}
+            key={'6面'} /> : null}
           {item.needHRinterview ?
             <Step title="HR面" description={item.timeList.hr.time} />
             : null
