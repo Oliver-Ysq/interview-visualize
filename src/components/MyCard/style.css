@@ -11,7 +11,7 @@
 .close-icon {
   position: absolute;
   right: 16px;
-  bottom: 16px;
+  bottom: 0px;
   color: #888;
 }
 
@@ -19,4 +19,25 @@
   font-size: 12px;
   margin-left: 5px;
   color: darkorange;
+}
+
+.cardTitle .am-card-header-extra {
+  flex-grow: 0.3;
+}
+
+.linking {
+  margin: 4px 0 10px 10px;
+  width: 66%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.reminder {
+  width: 100%;
+  text-align: center;
+}
+
+.time-text {
+  color: #777;
 }

@@ -31,32 +31,33 @@ const MyCard = (item: IInterviewListItem & { index: number }) => {
       <div className="steps-wrapper">
         <Steps size="large" current={item.current} direction='vertical'>
           {item.needWrittenExam ?
-            <Step title="笔试" description={item.timeList.written && item.timeList.written.time} />
+            <Step title="笔试" description={<div className="time-text">{item.timeList.written && item.timeList.written.time}</div>} />
             : null
           }
           {item.totalRounds >= 1 ? <Step title="一面"
-            description={item.timeList.interview[0] && item.timeList.interview[0].time}
+            description={<div className="time-text">{item.timeList.interview[0] && item.timeList.interview[0].time}</div>}
             key={'1面'} /> : null}
           {item.totalRounds >= 2 ? <Step title="二面"
-            description={item.timeList.interview[1] && item.timeList.interview[1].time}
+            description={<div className="time-text">{item.timeList.interview[1] && item.timeList.interview[1].time}</div>}
             key={'2面'} /> : null}
           {item.totalRounds >= 3 ? <Step title="三面"
-            description={item.timeList.interview[2] && item.timeList.interview[2].time}
+            description={<div className="time-text">{item.timeList.interview[2] && item.timeList.interview[2].time}</div>}
             key={'3面'} /> : null}
           {item.totalRounds >= 4 ? <Step title="四面"
-            description={item.timeList.interview[3] && item.timeList.interview[3].time}
+            description={<div className="time-text">{item.timeList.interview[3] && item.timeList.interview[3].time}</div>}
             key={'4面'} /> : null}
           {item.totalRounds >= 5 ? <Step title="五面"
-            description={item.timeList.interview[4] && item.timeList.interview[4].time}
+            description={<div className="time-text">{item.timeList.interview[4] && item.timeList.interview[4].time}</div>}
             key={'5面'} /> : null}
           {item.totalRounds >= 6 ? <Step title="六面"
-            description={item.timeList.interview[5] && item.timeList.interview[5].time}
+            description={<div className="time-text">{item.timeList.interview[5] && item.timeList.interview[5].time}</div>}
             key={'6面'} /> : null}
           {item.needHRinterview ?
-            <Step title="HR面" description={item.timeList.hr.time} />
+            <Step title="HR面" description={<div className="time-text">{item.timeList.hr && item.timeList.hr.time}</div>} />
             : null
           }
         </Steps>
+        {!!item.linking ? <div className="linking">链接: <a target="_blank" href={item.linking}>{item.linking}</a> </div> : null}
         <div className="close-icon" onClick={onClickDetail}>收起详情</div>
       </div>
     )
@@ -67,7 +68,14 @@ const MyCard = (item: IInterviewListItem & { index: number }) => {
       <WhiteSpace size="lg" />
       <Card>
         <Card.Header
-          title={<div>{item.companyName} - {item.positionName}</div>}
+          className="cardTitle"
+          title={
+            <div >
+              <span style={{ fontWeight: 'bold' }}>{item.companyName}</span>
+              <span style={{ fontSize: 13, marginLeft: 4 }}>{item.positionName} -
+                <span >{item.type}</span>
+              </span>
+            </div>}
           thumb={<img className="card-icon" alt="company-icon" src={BAIDU}></img>}
           extra={<img className="card-icon" alt="删除" src={垃圾} onClick={onClick垃圾}></img>}
         />

@@ -3,7 +3,7 @@ import "./style.css"
 import Store from "../../store/index"
 import MyCard from "../../components/MyCard"
 import 空 from "../../assets/空.png"
-import { Modal } from "antd-mobile"
+import { Icon, Modal } from "antd-mobile"
 import { useCallback, useState } from "react"
 import Form from "./Form"
 
@@ -35,9 +35,11 @@ const Progress = () => {
         visible={showModal}
         onClose={() => setShowModal(false)}
         animationType="slide-up"
-        maskClosable={false}
+      // maskClosable={false}
       >
-        <div style={{ fontSize: 17, padding: 8 }}>新增投递</div>
+        <div style={{ fontSize: 17, padding: 12 }}>新增投递
+          <Icon type="cross-circle" style={{ float: 'right' }} onClick={() => setShowModal(false)}></Icon>
+        </div>
         <Form onCloseModal={onCloseModal} />
       </Modal>
 

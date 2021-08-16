@@ -8,3 +8,9 @@ export const colorMap = {
   '成功': '#4ed60f',
   '进行中': '#12a6db'
 }
+export const Type = {
+  ADVANCE: '提前批',
+  FORMAL: '正式批',
+  SPRING: '春招',
+  TEST: '实习'
+}

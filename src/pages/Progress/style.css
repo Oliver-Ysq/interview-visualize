@@ -20,3 +20,12 @@
   background-image: url('../../assets/add.png');
   background-size: cover;
 }
+
+.am-list-extra {
+  flex: 1;
+}
+
+.am-list-content {
+  max-width: 50%;
+  min-width: 50%;
+}

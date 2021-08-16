@@ -1,5 +1,5 @@
 import { makeAutoObservable } from "mobx"
-import { JobStatus } from "../utils/constant"
+import { JobStatus, Type } from "../utils/constant"
 import { getChineseNumber } from "../utils/util"
 
 type ITime = Date | string | undefined | null
@@ -12,6 +12,8 @@ type ITime = Date | string | undefined | null
  * needHRinterview: boolean; // 是否需要HR面
  * totalRounds: number; // 除笔试、HR面外的轮数
  * tips?: string; // 备注
+ * linking?: string; // 投递链接
+ * type: Type; // 投递类型
  * timeList: {  // time：时间   status：-1 等待； 0 失败； 1 成功；
     written: { time: string | Date, status?: number },
     interview: Array<{ time: string | Date, status?: number }>,
@@ -26,6 +28,8 @@ export interface IInterviewListItem {
   needWrittenExam: boolean; // 是否需要笔试
   needHRinterview: boolean; // 是否需要HR面
   totalRounds: number; // 除笔试、HR面外的轮数
+  type: string;
+  linking?: string; // 投递链接
   timeList: {
     written: { time: ITime, status?: number },
     interview: Array<{ time: ITime, status?: number }>,
@@ -39,10 +43,12 @@ class ProgressStore {
       jobStatus: JobStatus.ING,
       companyName: '百度',
       positionName: '前端',
+      type: Type.ADVANCE,
       totalRounds: 2,
       current: 0,
       needWrittenExam: true,
       needHRinterview: true,
+      linking: 'https://baidu.com/asdhflasjdfljasldjfasdfjasldjfkl',
       timeList: {
         written: { time: "6.1", status: -1 },
         interview: [{ time: "6.2", status: -1 }, { time: "6.3", status: -1 }],
