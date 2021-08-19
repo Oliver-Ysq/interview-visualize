@@ -84,6 +84,9 @@ class ProgressStore {
       }
     }
   }
+  clearList() {
+    this.interviewList = []
+  }
 }
 
 export default ProgressStore

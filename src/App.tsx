@@ -1,10 +1,18 @@
 import './App.css';
 import { TabBar } from 'antd-mobile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import My from "./pages/My"
 import Progress from "./pages/Progress"
 
 function App() {
+  useEffect(() => {
+    AV.init({
+      appId: "ARk4ru0KKxgLll16jveu4cIC-gzGzoHsz",
+      appKey: "CVTzWFxaGjKXDHVCyMQeDqnn",
+      serverURL: "https://ark4ru0k.lc-cn-n1-shared.com"
+    });
+
+  }, [])
   const [selectedTab, setSelectedTab] = useState(0)
 
   return (
@@ -25,7 +33,7 @@ function App() {
           }}
           data-seed="logId"
         >
-          <Progress />
+          <Progress selected={selectedTab === 0} />
         </TabBar.Item>
         <TabBar.Item
           title="我的"
@@ -39,7 +47,7 @@ function App() {
           }}
           data-seed="logId"
         >
-          <My />
+          <My selected={selectedTab === 1} />
         </TabBar.Item>
       </TabBar>
     </div>

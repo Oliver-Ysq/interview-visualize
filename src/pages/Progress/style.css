@@ -12,6 +12,7 @@
 
 .add {
   position: fixed;
+  z-index: 99;
   bottom: 60px;
   right: 10px;
   height: 50px;
