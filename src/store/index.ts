@@ -1,7 +1,7 @@
 import ProgressStore from "./progress";
-import AuthStore from "./auth"
+import AuthStore from "./auth";
 const Store = {
-  progressStore: new ProgressStore(),
-  authStore: new AuthStore()
-}
-export default Store
+    progressStore: ProgressStore,
+    authStore: AuthStore,
+};
+export default Store;
