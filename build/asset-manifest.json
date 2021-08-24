@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/static/css/main.89fd58e0.chunk.css",
-    "main.js": "/static/js/main.9799b039.chunk.js",
-    "main.js.map": "/static/js/main.9799b039.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e9c4c481.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e9c4c481.js.map",
-    "static/css/2.1252f769.chunk.css": "/static/css/2.1252f769.chunk.css",
-    "static/js/2.7cef5db7.chunk.js": "/static/js/2.7cef5db7.chunk.js",
-    "static/js/2.7cef5db7.chunk.js.map": "/static/js/2.7cef5db7.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.1252f769.chunk.css.map": "/static/css/2.1252f769.chunk.css.map",
-    "static/css/main.89fd58e0.chunk.css.map": "/static/css/main.89fd58e0.chunk.css.map",
-    "static/js/2.7cef5db7.chunk.js.LICENSE.txt": "/static/js/2.7cef5db7.chunk.js.LICENSE.txt",
-    "static/media/App.css": "/static/media/progress0.85515ec0.svg",
-    "static/media/arrow.c12c8cc8.svg": "/static/media/arrow.c12c8cc8.svg",
-    "static/media/double-arrow.d17c745c.svg": "/static/media/double-arrow.d17c745c.svg",
-    "static/media/style.css": "/static/media/head.a57b719f.jpeg"
+    "main.css": "./static/css/main.9002666b.chunk.css",
+    "main.js": "./static/js/main.9799b039.chunk.js",
+    "main.js.map": "./static/js/main.9799b039.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.765bdc18.js",
+    "runtime-main.js.map": "./static/js/runtime-main.765bdc18.js.map",
+    "static/css/2.1252f769.chunk.css": "./static/css/2.1252f769.chunk.css",
+    "static/js/2.7cef5db7.chunk.js": "./static/js/2.7cef5db7.chunk.js",
+    "static/js/2.7cef5db7.chunk.js.map": "./static/js/2.7cef5db7.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/2.1252f769.chunk.css.map": "./static/css/2.1252f769.chunk.css.map",
+    "static/css/main.9002666b.chunk.css.map": "./static/css/main.9002666b.chunk.css.map",
+    "static/js/2.7cef5db7.chunk.js.LICENSE.txt": "./static/js/2.7cef5db7.chunk.js.LICENSE.txt",
+    "static/media/App.css": "./static/media/progress0.85515ec0.svg",
+    "static/media/arrow.c12c8cc8.svg": "./static/media/arrow.c12c8cc8.svg",
+    "static/media/double-arrow.d17c745c.svg": "./static/media/double-arrow.d17c745c.svg",
+    "static/media/style.css": "./static/media/head.a57b719f.jpeg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e9c4c481.js",
+    "static/js/runtime-main.765bdc18.js",
     "static/css/2.1252f769.chunk.css",
     "static/js/2.7cef5db7.chunk.js",
-    "static/css/main.89fd58e0.chunk.css",
+    "static/css/main.9002666b.chunk.css",
     "static/js/main.9799b039.chunk.js"
   ]
 }
