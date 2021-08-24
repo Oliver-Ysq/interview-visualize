@@ -1,0 +1,10 @@
+.am-list-content {
+	max-width: 100% !important;
+	min-width: 0 !important;
+}
+.am-list-item .am-list-line .am-list-content {
+	flex: 1;
+}
+.mycard {
+	margin: 12px;
+}

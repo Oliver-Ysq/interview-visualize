@@ -13,6 +13,8 @@ export const getChineseNumber = (num: number) => {
 	const map = ["零", "一", "二", "三", "四", "五", "六"];
 	return map[num];
 };
+
+const pad = (n: number) => (n < 10 ? `0${n}` : n);
 /**
  * 格式化日期
  * @param date
@@ -21,13 +23,20 @@ export const getChineseNumber = (num: number) => {
 export function formatDate(date: ITime) {
 	if (date === undefined) return "";
 	/* eslint no-confusing-arrow: 0 */
-	const pad = (n: number) => (n < 10 ? `0${n}` : n);
-	const dateStr = `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+	const dateStr = `[${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
 		date.getDate()
-	)}`;
-	const timeStr = `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+	)}]`;
+	const timeStr = `${pad(date.getHours())}时${pad(date.getMinutes())}分`;
 	return `${dateStr} ${timeStr}`;
 }
+
+export function calendarFormatDate(date: ITime) {
+	if (!date) return "";
+	return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(
+		date.getDate()
+	)}`;
+}
+
 /**
  * 根据公司名返回图标
  * @param companyName

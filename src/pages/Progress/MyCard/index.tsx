@@ -7,8 +7,9 @@ import {
 	List,
 	Icon,
 	Modal,
+	Toast,
 } from "antd-mobile";
-import 垃圾 from "../../assets/垃圾.png";
+import 垃圾 from "../../../assets/垃圾.png";
 import "./style.css";
 import Store from "../../../store/index";
 import { IInterviewListItem } from "../../../store/progress";
@@ -77,7 +78,9 @@ const MyCard = (item: IProps) => {
 	const onClick垃圾 = async () => {
 		const res = await show垃圾Modal();
 		if (res) {
-			progressStore.deleteInterviewListItem(item.objectId);
+			Toast.loading("Loading...", 0);
+			await progressStore.deleteInterviewListItem(item.objectId);
+			Toast.hide();
 		}
 	};
 	const onClickPass = async () => {

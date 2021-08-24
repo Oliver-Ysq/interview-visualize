@@ -40,6 +40,7 @@ export interface IInterviewListItem {
 	};
 	linking?: string; // 投递链接
 }
+
 class ProgressStore {
 	interviewList: IInterviewListItem[] = [
 		// {
@@ -143,7 +144,7 @@ class ProgressStore {
 	async deleteInterviewListItem(objectId: string) {
 		const del = AV.Object.createWithoutData("InterviewList", objectId);
 		await del.destroy();
-		this.getInterviewList();
+		await this.getInterviewList();
 	}
 
 	/**

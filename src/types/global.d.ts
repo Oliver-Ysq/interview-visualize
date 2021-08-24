@@ -8,3 +8,5 @@ declare var AV = {
         createWithoutData: any,
     },
 };
+
+declare module "react-h5-calendar";
