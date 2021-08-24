@@ -10,12 +10,12 @@ import {
 } from "antd-mobile";
 import 垃圾 from "../../assets/垃圾.png";
 import "./style.css";
-import Store from "../../store/index";
-import { IInterviewListItem } from "../../store/progress";
+import Store from "../../../store/index";
+import { IInterviewListItem } from "../../../store/progress";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { observer } from "mobx-react";
-import { colorMap, JobStatus } from "../../utils/constant";
-import { formatDate, getIconUrl } from "../../utils/util";
+import { colorMap, JobStatus } from "../../../utils/constant";
+import { formatDate, getIconUrl } from "../../../utils/util";
 const Step = Steps.Step;
 const IconMap = {
 	[JobStatus.FAIL]: "cross-circle",

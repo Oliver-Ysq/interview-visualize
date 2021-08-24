@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import "./style.css";
 import Store from "../../store/index";
-import MyCard from "../../components/MyCard";
+import MyCard from "./MyCard";
 import 空 from "../../assets/空.png";
 import { Icon, Modal } from "antd-mobile";
 import { useCallback, useState } from "react";
