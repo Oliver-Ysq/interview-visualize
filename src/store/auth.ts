@@ -7,6 +7,7 @@ interface IUserInfo {
 class AuthStore {
 	username = "";
 	hasLogin = false;
+	hasShowModal = false;
 	constructor() {
 		makeAutoObservable(this);
 	}
@@ -44,6 +45,9 @@ class AuthStore {
 		// 状态清空
 		this.hasLogin = false;
 		this.username = "";
+	}
+	setHasShowModal(hasShowModal: boolean) {
+		this.hasShowModal = hasShowModal;
 	}
 }
 

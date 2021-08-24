@@ -6,8 +6,8 @@ import {
 	Button,
 	List,
 	Icon,
+	Modal,
 } from "antd-mobile";
-import BAIDU from "../../assets/百度.png";
 import 垃圾 from "../../assets/垃圾.png";
 import "./style.css";
 import Store from "../../store/index";
@@ -15,7 +15,7 @@ import { IInterviewListItem } from "../../store/progress";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import { colorMap, JobStatus } from "../../utils/constant";
-import { formatDate } from "../../utils/util";
+import { formatDate, getIconUrl } from "../../utils/util";
 const Step = Steps.Step;
 const IconMap = {
 	[JobStatus.FAIL]: "cross-circle",
@@ -30,28 +30,58 @@ type IProps = {
 
 const MyCard = (item: IProps) => {
 	const [showDetail, setShowDetail] = useState(false);
-	const { progressStore } = Store;
+	const { progressStore, authStore } = Store;
 
+	const showConfirmModal = () => {
+		return new Promise((resolve) => {
+			if (authStore.hasShowModal) resolve(true);
+			else {
+				Modal.alert(
+					"提示",
+					<div>
+						<div>pass & fail 操作不可逆</div>
+						<div>确认当前轮次面试已通过or失败吗？</div>
+					</div>,
+					[
+						{ text: "取消", onPress: () => resolve(false) },
+						{
+							text: "确认",
+							onPress: () => {
+								resolve(true);
+								authStore.setHasShowModal(true);
+							},
+						},
+					]
+				);
+			}
+		});
+	};
 	const onClickDetail = useCallback(() => {
 		setShowDetail(!showDetail);
 	}, [showDetail, setShowDetail]);
 	const onClick垃圾 = () => {
 		progressStore.deleteInterviewListItem(item.objectId!);
 	};
-	const onClickPass = () => {
-		let total =
-			item.totalRounds +
-			(item.needHRinterview ? 1 : 0) +
-			(item.needWrittenExam ? 1 : 0);
-		progressStore.pass(item.objectId, item.current, total, item.jobStatus);
+	const onClickPass = async () => {
+		const res = await showConfirmModal();
+		if (res) {
+			let total =
+				item.totalRounds +
+				(item.needHRinterview ? 1 : 0) +
+				(item.needWrittenExam ? 1 : 0);
+			progressStore.pass(item.objectId, item.current, total, item.jobStatus);
+		}
 	};
-	const onClickFail = () => {
-		progressStore.fail(item.objectId, item.jobStatus);
+	const onClickFail = async () => {
+		const res = await showConfirmModal();
+		if (res) progressStore.fail(item.objectId, item.jobStatus);
 	};
 	const onClickEdit = () => {
 		if ([JobStatus.FAIL, JobStatus.SUCC].includes(item.jobStatus)) return;
+		console.log(1);
 		item.setObjId(item.objectId);
 		item.setShowModal(true);
+		setShowDetail(false);
 	};
 
 	const renderSteps = () => {
@@ -182,7 +212,11 @@ const MyCard = (item: IProps) => {
 						</div>
 					}
 					thumb={
-						<img className="card-icon" alt="company-icon" src={BAIDU}></img>
+						<img
+							className="card-icon"
+							alt="company-icon"
+							src={getIconUrl(item.companyName)}
+						></img>
 					}
 					extra={
 						<img

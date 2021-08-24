@@ -62,6 +62,9 @@ class ProgressStore {
 		//     },
 		// },
 	];
+	totalFail: number = 0;
+	totalIng: number = 0;
+	totalSucc: number = 0;
 
 	constructor() {
 		makeAutoObservable(this);
@@ -71,6 +74,7 @@ class ProgressStore {
 	 * 刷新interviewList
 	 */
 	async getInterviewList() {
+		// 查询interviewList
 		const query = new AV.Query("InterviewList");
 		query.equalTo("user", AV.User.current().id);
 		const res = await query.find();
@@ -81,7 +85,21 @@ class ProgressStore {
 				return i.attributes;
 			}
 		);
-		console.log(this.interviewList);
+
+		// 更新统计信息
+		let fail = 0,
+			succ = 0,
+			ing = 0;
+		this.interviewList.forEach((v) => {
+			if (v.jobStatus === JobStatus.FAIL) fail++;
+			else if (v.jobStatus === JobStatus.SUCC) succ++;
+			else {
+				ing++;
+			}
+		});
+		this.totalFail = fail;
+		this.totalIng = ing;
+		this.totalSucc = succ;
 	}
 
 	/**
@@ -175,10 +193,12 @@ class ProgressStore {
 					return `${getChineseNumber(current)}面`;
 				}
 			}
-		} else if (item.needHRinterview && current === item.totalRounds) {
-			return "HR面";
 		} else {
-			return `${getChineseNumber(current - 1)}面`;
+			if (item.needHRinterview && current === item.totalRounds) {
+				return "HR面";
+			} else {
+				return `${getChineseNumber(current + 1)}面`;
+			}
 		}
 	}
 

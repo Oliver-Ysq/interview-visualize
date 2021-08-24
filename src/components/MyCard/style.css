@@ -6,6 +6,7 @@
 
 .steps-wrapper {
   position: relative;
+  padding-left: 12px;
 }
 
 .close-icon {

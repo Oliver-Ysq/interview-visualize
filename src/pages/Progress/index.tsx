@@ -20,6 +20,11 @@ const Progress = (props: IProps) => {
 		setShowModal(false);
 	}, [setShowModal]);
 
+	const onBack = () => {
+		setShowModal(false);
+		setObjId("");
+	};
+
 	const renderList = () => {
 		return (
 			<div className="progress-wrapper">
@@ -45,16 +50,16 @@ const Progress = (props: IProps) => {
 				<Modal
 					popup
 					visible={showModal}
-					onClose={() => setShowModal(false)}
+					onClose={onBack}
 					animationType="slide-up"
 					// maskClosable={false}
 				>
 					<div style={{ fontSize: 17, padding: 12 }}>
-						新增投递
+						完善投递信息
 						<Icon
 							type="cross-circle"
 							style={{ float: "right" }}
-							onClick={() => setShowModal(false)}
+							onClick={onBack}
 						></Icon>
 					</div>
 					<Form onCloseModal={onCloseModal} objId={objId} setObjId={setObjId} />

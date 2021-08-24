@@ -168,7 +168,7 @@ const My = (props: IProps) => {
 								img={myImg(
 									"https://gw.alipayobjects.com/zos/rmsportal/HWuSTipkjJRfTWekgTUG.svg"
 								)}
-								message={`面试中：3家`}
+								message={`面试中：${progressStore.totalIng}家`}
 							/>
 							<Result
 								img={
@@ -178,7 +178,7 @@ const My = (props: IProps) => {
 										style={{ fill: "#1F90E6" }}
 									/>
 								}
-								message={`面试成功：2家`}
+								message={`面试成功：${progressStore.totalSucc}家`}
 							/>
 							<Result
 								img={
@@ -188,7 +188,7 @@ const My = (props: IProps) => {
 										style={{ fill: "#F13642" }}
 									/>
 								}
-								message={`面试失败：1家`}
+								message={`面试失败：${progressStore.totalFail}家`}
 							/>
 						</Card.Body>
 						<Card.Footer

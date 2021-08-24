@@ -3,7 +3,9 @@ import {
 	DatePicker,
 	InputItem,
 	List,
+	Modal,
 	Picker,
+	Stepper,
 	Switch,
 } from "antd-mobile";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -20,7 +22,7 @@ const Form = (props: IForm) => {
 	const [companyName, setcompanyName] = useState("");
 	const [positionName, setpositionName] = useState("");
 	const [type, setType] = useState<string[] | undefined>();
-	const [totalRounds, settotalRounds] = useState("2");
+	const [totalRounds, settotalRounds] = useState<number>(4); // 总轮数
 	const [needWritten, setNeedWritten] = useState(true);
 	const [needHR, setNeedHR] = useState(true);
 	const [linking, setLinking] = useState("");
@@ -29,6 +31,7 @@ const Form = (props: IForm) => {
 		Array<Date | undefined> | []
 	>([]);
 	const [hrTime, setHrTime] = useState<Date | undefined>();
+	const [min, setMin] = useState(3);
 
 	const { progressStore } = Store;
 	const { onCloseModal, objId, setObjId } = props;
@@ -40,13 +43,22 @@ const Form = (props: IForm) => {
 			setcompanyName(item.companyName);
 			setpositionName(item.positionName);
 			setType([item.type]);
-			settotalRounds(String(item.totalRounds));
+			settotalRounds(
+				item.totalRounds +
+					(item.needWrittenExam ? 1 : 0) +
+					(item.needHRinterview ? 1 : 0)
+			); // item中的totalRounds不算笔试hr面，需要加回来
 			setNeedHR(item.needHRinterview);
 			setNeedWritten(item.needWrittenExam);
 			setLinking(item.linking || "");
 			setWrittenTime(item.timeList.written.time);
 			setHrTime(item.timeList.hr.time);
 			setInterviewTime(item.timeList.interview.map((i) => i.time));
+			setMin(
+				item.totalRounds +
+					(item.needWrittenExam ? 1 : 0) +
+					(item.needHRinterview ? 1 : 0)
+			);
 		}
 	}, [objId, progressStore.interviewList]);
 
@@ -66,13 +78,19 @@ const Form = (props: IForm) => {
 	const handleSubmit = () => {
 		if (props.objId === "") {
 			// 新增item
+			if (companyName === "" || positionName === "") {
+				Modal.alert("Waring", "请完善必填信息", [
+					{ text: "OK", onPress: () => {} },
+				]);
+				return;
+			}
 			progressStore.addInterviewListItem({
 				objectId: "",
 				jobStatus: JobStatus.ING,
 				companyName,
 				positionName,
 				type: !!type ? type[0] : Type.FORMAL,
-				totalRounds: parseInt(totalRounds),
+				totalRounds: totalRounds - (needWritten ? 1 : 0) - (needHR ? 1 : 0),
 				needWrittenExam: needWritten,
 				needHRinterview: needHR,
 				current: 0,
@@ -91,7 +109,7 @@ const Form = (props: IForm) => {
 				companyName,
 				positionName,
 				type: !!type ? type[0] : Type.FORMAL,
-				totalRounds: parseInt(totalRounds),
+				totalRounds: totalRounds - (needWritten ? 1 : 0) - (needHR ? 1 : 0),
 				needWrittenExam: needWritten,
 				needHRinterview: needHR,
 				timeList: {
@@ -162,8 +180,18 @@ const Form = (props: IForm) => {
 				extra={
 					<Switch
 						checked={needWritten}
-						onChange={(e) => setNeedWritten(e)}
+						onChange={(e) => {
+							setNeedWritten(e);
+							if (e) {
+								settotalRounds(totalRounds + 1);
+								setMin(min + 1);
+							} else {
+								settotalRounds(totalRounds - 1);
+								setMin(min - 1);
+							}
+						}}
 						platform="ios"
+						disabled={objId !== ""}
 					/>
 				}
 			>
@@ -173,25 +201,43 @@ const Form = (props: IForm) => {
 				extra={
 					<Switch
 						checked={needHR}
-						onChange={(e) => setNeedHR(e)}
+						onChange={(e) => {
+							setNeedHR(e);
+							if (e) {
+								settotalRounds(totalRounds + 1);
+								setMin(min + 1);
+							} else {
+								settotalRounds(totalRounds - 1);
+								setMin(min - 1);
+							}
+						}}
 						platform="ios"
+						disabled={objId !== ""}
 					/>
 				}
 			>
 				* 是否需要HR面
 			</List.Item>
-			<InputItem
-				value={totalRounds}
-				onChange={(e) => {
-					settotalRounds(e);
-				}}
-				maxLength={1}
-				type="number"
-				clear={true}
-				placeholder="请输入除笔试、HR面外的轮数"
+			<List.Item
+				wrap
+				extra={
+					<Stepper
+						showNumber
+						max={8}
+						min={min}
+						value={totalRounds}
+						onChange={(e) => {
+							// 笔试hr面都需要的时候，总轮数不能小于3
+							if (needWritten && needHR && e < 3) return;
+							// 笔试hr面需要其一的时候，总轮数不能小于2
+							else if (e < 2 && (needHR || needHR)) return;
+							settotalRounds(e);
+						}}
+					/>
+				}
 			>
-				* 正式轮数
-			</InputItem>
+				* 面试总轮数
+			</List.Item>
 			<List.Item>
 				<div className="reminder">*** 以下内容选填 ***</div>{" "}
 			</List.Item>
@@ -206,7 +252,7 @@ const Form = (props: IForm) => {
 					<List.Item arrow="horizontal"> 笔试时间</List.Item>
 				</DatePicker>
 			) : null}
-			{renderInput(parseInt(totalRounds))}
+			{renderInput(totalRounds - (needHR ? 1 : 0) - (needWritten ? 1 : 0))}
 			{needHR ? (
 				<DatePicker value={hrTime} onChange={(date) => setHrTime(date)}>
 					<List.Item arrow="horizontal"> hr面时间</List.Item>
