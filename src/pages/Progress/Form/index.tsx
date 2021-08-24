@@ -6,13 +6,15 @@ import {
 	Picker,
 	Switch,
 } from "antd-mobile";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Store from "../../../store";
 import { JobStatus, Type } from "../../../utils/constant";
-import { formatDate, getChineseNumber } from "../../../utils/util";
+import { getChineseNumber } from "../../../utils/util";
 import "./style.css";
 interface IForm {
 	onCloseModal: () => void;
+	objId: string;
+	setObjId: Dispatch<SetStateAction<string>>;
 }
 const Form = (props: IForm) => {
 	const [companyName, setcompanyName] = useState("");
@@ -23,11 +25,30 @@ const Form = (props: IForm) => {
 	const [needHR, setNeedHR] = useState(true);
 	const [linking, setLinking] = useState("");
 	const [writtenTime, setWrittenTime] = useState<Date | undefined>();
-	const [interviewTime, setInterviewTime] = useState<Date[] | []>([]);
+	const [interviewTime, setInterviewTime] = useState<
+		Array<Date | undefined> | []
+	>([]);
 	const [hrTime, setHrTime] = useState<Date | undefined>();
 
 	const { progressStore } = Store;
-	const { onCloseModal } = props;
+	const { onCloseModal, objId, setObjId } = props;
+
+	useEffect(() => {
+		if (objId === "") return;
+		const item = progressStore.interviewList.find((i) => i.objectId === objId);
+		if (item) {
+			setcompanyName(item.companyName);
+			setpositionName(item.positionName);
+			setType([item.type]);
+			settotalRounds(String(item.totalRounds));
+			setNeedHR(item.needHRinterview);
+			setNeedWritten(item.needWrittenExam);
+			setLinking(item.linking || "");
+			setWrittenTime(item.timeList.written.time);
+			setHrTime(item.timeList.hr.time);
+			setInterviewTime(item.timeList.interview.map((i) => i.time));
+		}
+	}, [objId, progressStore.interviewList]);
 
 	const updateInterviewTime = (date: Date, index: number) => {
 		interviewTime[index] = date;
@@ -43,25 +64,47 @@ const Form = (props: IForm) => {
 	];
 
 	const handleSubmit = () => {
-		progressStore.addInterviewListItem({
-			objectId: "",
-			jobStatus: JobStatus.ING,
-			companyName,
-			positionName,
-			type: !!type ? type[0] : Type.FORMAL,
-			totalRounds: parseInt(totalRounds),
-			needWrittenExam: needWritten,
-			needHRinterview: needHR,
-			current: 0,
-			timeList: {
-				written: { time: !writtenTime ? "" : formatDate(writtenTime) },
-				interview: interviewTime.map((v) => {
-					return { time: formatDate(v) };
-				}),
-				hr: { time: !hrTime ? "" : formatDate(hrTime) },
-			},
-		});
+		if (props.objId === "") {
+			// 新增item
+			progressStore.addInterviewListItem({
+				objectId: "",
+				jobStatus: JobStatus.ING,
+				companyName,
+				positionName,
+				type: !!type ? type[0] : Type.FORMAL,
+				totalRounds: parseInt(totalRounds),
+				needWrittenExam: needWritten,
+				needHRinterview: needHR,
+				current: 0,
+				timeList: {
+					written: { time: !writtenTime ? undefined : writtenTime },
+					interview: interviewTime.map((v) => {
+						return { time: v };
+					}),
+					hr: { time: !hrTime ? undefined : hrTime },
+				},
+			});
+		} else {
+			// 修改item
+			progressStore.updateInterviewListItem({
+				objectId: objId,
+				companyName,
+				positionName,
+				type: !!type ? type[0] : Type.FORMAL,
+				totalRounds: parseInt(totalRounds),
+				needWrittenExam: needWritten,
+				needHRinterview: needHR,
+				timeList: {
+					written: { time: !writtenTime ? undefined : writtenTime },
+					interview: interviewTime.map((v) => {
+						return { time: v };
+					}),
+					hr: { time: !hrTime ? undefined : hrTime },
+				},
+			});
+		}
 		onCloseModal();
+		setObjId("");
 	};
 
 	const renderInput = (number: number) => {
@@ -155,7 +198,10 @@ const Form = (props: IForm) => {
 			{needWritten ? (
 				<DatePicker
 					value={writtenTime}
-					onChange={(date) => setWrittenTime(date)}
+					onChange={(date) => {
+						setWrittenTime(date);
+						console.log(date);
+					}}
 				>
 					<List.Item arrow="horizontal"> 笔试时间</List.Item>
 				</DatePicker>

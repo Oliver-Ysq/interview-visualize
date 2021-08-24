@@ -2,7 +2,7 @@ import { JobStatus } from "./../utils/constant";
 import { makeAutoObservable } from "mobx";
 import { getChineseNumber } from "../utils/util";
 
-type ITime = Date | string | undefined | null;
+export type ITime = Date | undefined;
 /**
  * user?: string; // 用户标识
  * objectId?: string;   // 唯一标识
@@ -68,7 +68,7 @@ class ProgressStore {
 	}
 
 	/**
-	 * 更新interviewList
+	 * 刷新interviewList
 	 */
 	async getInterviewList() {
 		const query = new AV.Query("InterviewList");
@@ -85,7 +85,7 @@ class ProgressStore {
 	}
 
 	/**
-	 * 增加新的interview记录
+	 * 增加新的interviewItem
 	 * @param params
 	 */
 	async addInterviewListItem(params: IInterviewListItem) {
@@ -119,12 +119,43 @@ class ProgressStore {
 	}
 
 	/**
-	 * 删除interview记录
+	 * 删除interviewItem
 	 * @param objectId
 	 */
 	async deleteInterviewListItem(objectId: string) {
 		const del = AV.Object.createWithoutData("InterviewList", objectId);
 		await del.destroy();
+		this.getInterviewList();
+	}
+
+	/**
+	 * 修改interviewItem
+	 * @param update
+	 */
+	async updateInterviewListItem(params: any) {
+		const {
+			companyName,
+			positionName,
+			needHRinterview,
+			needWrittenExam,
+			totalRounds,
+			type,
+			linking,
+			timeList,
+			objectId,
+		} = params;
+		const newItem = AV.Object.createWithoutData("InterviewList", objectId);
+		if (companyName !== undefined) newItem.set("companyName", companyName);
+		if (positionName !== undefined) newItem.set("positionName", positionName);
+		if (needWrittenExam !== undefined)
+			newItem.set("needWrittenExam", needWrittenExam);
+		if (needHRinterview !== undefined)
+			newItem.set("needHRinterview", needHRinterview);
+		if (totalRounds !== undefined) newItem.set("totalRounds", totalRounds);
+		if (type !== undefined) newItem.set("type", type);
+		if (linking !== undefined) newItem.set("linking", linking);
+		if (timeList !== undefined) newItem.set("timeList", timeList);
+		await newItem.save();
 		this.getInterviewList();
 	}
 

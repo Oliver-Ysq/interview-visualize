@@ -16,7 +16,6 @@ interface IProps {
 	selected: boolean;
 }
 const My = (props: IProps) => {
-	const { selected } = props;
 	const { authStore, progressStore } = Store;
 	const myImg = (src: string) => (
 		<img src={src} className="spe am-icon am-icon-md" alt="" />

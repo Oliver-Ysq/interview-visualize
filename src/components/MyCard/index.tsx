@@ -12,9 +12,10 @@ import 垃圾 from "../../assets/垃圾.png";
 import "./style.css";
 import Store from "../../store/index";
 import { IInterviewListItem } from "../../store/progress";
-import React, { MouseEvent, useCallback, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { observer } from "mobx-react";
 import { colorMap, JobStatus } from "../../utils/constant";
+import { formatDate } from "../../utils/util";
 const Step = Steps.Step;
 const IconMap = {
 	[JobStatus.FAIL]: "cross-circle",
@@ -22,7 +23,12 @@ const IconMap = {
 	[JobStatus.SUCC]: "check-circle-o",
 };
 
-const MyCard = (item: IInterviewListItem) => {
+type IProps = {
+	setShowModal: Dispatch<SetStateAction<boolean>>;
+	setObjId: Dispatch<SetStateAction<string>>;
+} & IInterviewListItem;
+
+const MyCard = (item: IProps) => {
 	const [showDetail, setShowDetail] = useState(false);
 	const { progressStore } = Store;
 
@@ -42,6 +48,11 @@ const MyCard = (item: IInterviewListItem) => {
 	const onClickFail = () => {
 		progressStore.fail(item.objectId, item.jobStatus);
 	};
+	const onClickEdit = () => {
+		if ([JobStatus.FAIL, JobStatus.SUCC].includes(item.jobStatus)) return;
+		item.setObjId(item.objectId);
+		item.setShowModal(true);
+	};
 
 	const renderSteps = () => {
 		return (
@@ -52,7 +63,8 @@ const MyCard = (item: IInterviewListItem) => {
 							title="笔试"
 							description={
 								<div className="time-text">
-									{item.timeList.written && item.timeList.written.time}
+									{item.timeList.written &&
+										formatDate(item.timeList.written.time)}
 								</div>
 							}
 						/>
@@ -63,7 +75,7 @@ const MyCard = (item: IInterviewListItem) => {
 							description={
 								<div className="time-text">
 									{item.timeList.interview[0] &&
-										item.timeList.interview[0].time}
+										formatDate(item.timeList.interview[0].time)}
 								</div>
 							}
 							key={"1面"}
@@ -75,7 +87,7 @@ const MyCard = (item: IInterviewListItem) => {
 							description={
 								<div className="time-text">
 									{item.timeList.interview[1] &&
-										item.timeList.interview[1].time}
+										formatDate(item.timeList.interview[1].time)}
 								</div>
 							}
 							key={"2面"}
@@ -87,7 +99,7 @@ const MyCard = (item: IInterviewListItem) => {
 							description={
 								<div className="time-text">
 									{item.timeList.interview[2] &&
-										item.timeList.interview[2].time}
+										formatDate(item.timeList.interview[2].time)}
 								</div>
 							}
 							key={"3面"}
@@ -99,7 +111,7 @@ const MyCard = (item: IInterviewListItem) => {
 							description={
 								<div className="time-text">
 									{item.timeList.interview[3] &&
-										item.timeList.interview[3].time}
+										formatDate(item.timeList.interview[3].time)}
 								</div>
 							}
 							key={"4面"}
@@ -111,7 +123,7 @@ const MyCard = (item: IInterviewListItem) => {
 							description={
 								<div className="time-text">
 									{item.timeList.interview[4] &&
-										item.timeList.interview[4].time}
+										formatDate(item.timeList.interview[4].time)}
 								</div>
 							}
 							key={"5面"}
@@ -123,7 +135,7 @@ const MyCard = (item: IInterviewListItem) => {
 							description={
 								<div className="time-text">
 									{item.timeList.interview[5] &&
-										item.timeList.interview[5].time}
+										formatDate(item.timeList.interview[5].time)}
 								</div>
 							}
 							key={"6面"}
@@ -134,7 +146,7 @@ const MyCard = (item: IInterviewListItem) => {
 							title="HR面"
 							description={
 								<div className="time-text">
-									{item.timeList.hr && item.timeList.hr.time}
+									{item.timeList.hr && formatDate(item.timeList.hr.time)}
 								</div>
 							}
 						/>
@@ -143,7 +155,7 @@ const MyCard = (item: IInterviewListItem) => {
 				{!!item.linking ? (
 					<div className="linking">
 						链接:{" "}
-						<a target="_blank" href={item.linking}>
+						<a target="_blank" rel="noreferrer" href={item.linking}>
 							{item.linking}
 						</a>{" "}
 					</div>
@@ -219,6 +231,7 @@ const MyCard = (item: IInterviewListItem) => {
 								size="small"
 								style={{ width: 80, float: "left" }}
 								type="ghost"
+								onClick={onClickEdit}
 							>
 								edit
 							</Button>
@@ -244,7 +257,6 @@ const MyCard = (item: IInterviewListItem) => {
 							</Button>
 						</>
 					}
-					// extra={ }
 				/>
 			</Card>
 			<WhiteSpace size="lg" />
