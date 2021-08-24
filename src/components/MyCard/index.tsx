@@ -34,7 +34,7 @@ const MyCard = (item: IProps) => {
 
 	const showConfirmModal = () => {
 		return new Promise((resolve) => {
-			if (authStore.hasShowModal) resolve(true);
+			if (authStore.hasShowPassModal) resolve(true);
 			else {
 				Modal.alert(
 					"提示",
@@ -48,7 +48,7 @@ const MyCard = (item: IProps) => {
 							text: "确认",
 							onPress: () => {
 								resolve(true);
-								authStore.setHasShowModal(true);
+								authStore.setHasShowPassModal(true);
 							},
 						},
 					]
@@ -56,11 +56,29 @@ const MyCard = (item: IProps) => {
 			}
 		});
 	};
+
+	const show垃圾Modal = async () => {
+		return new Promise((resolve) => {
+			Modal.alert("提示", <div>确认要删除该投递吗？</div>, [
+				{ text: "取消", onPress: () => resolve(false) },
+				{
+					text: "确认",
+					onPress: () => {
+						resolve(true);
+					},
+				},
+			]);
+		});
+	};
+
 	const onClickDetail = useCallback(() => {
 		setShowDetail(!showDetail);
 	}, [showDetail, setShowDetail]);
-	const onClick垃圾 = () => {
-		progressStore.deleteInterviewListItem(item.objectId!);
+	const onClick垃圾 = async () => {
+		const res = await show垃圾Modal();
+		if (res) {
+			progressStore.deleteInterviewListItem(item.objectId);
+		}
 	};
 	const onClickPass = async () => {
 		const res = await showConfirmModal();
